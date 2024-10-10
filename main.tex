@@ -126,7 +126,7 @@
     \begin{block}{符号码信源编码定理}
         若编码 $c$ 将 $x$ 编码为有限长的 $01$ 字符串 $c(x)$，则
 
-        \[H(X) \leq E(\lvert c(x)\rvert)\]
+        \[H(X) \leq E(\lvert c(X)\rvert)\]
     \end{block}
 
     % 假设 $n\in\mathbb{N}$, $X$ 的取值集合为 $\mathcal{X} = \{1, \dots, 2^n\}$，取到每个值的概率均为 $\frac{1}{2^n}$。最优的编码方案就是用 $\underbrace{0 \cdots 0}_{n}, \dots, \underbrace{1 \cdots 1}_{n}$ 编码每个取值。平均需要的比特数为
@@ -147,7 +147,7 @@
         \[\left(\sum_{x\in\mathcal{X}}2^{-\lvert c(x)\rvert}\right)^n = \sum_{k = nl_{min}}^{nl_{max}} a(k)2^{-k}\]
         由唯一可译性质码的性质可知 $a(k)\leq 2^k$，则
         \[\sum_{x\in\mathcal{X}}2^{-\lvert c(x)\rvert} \leq (n(l_{max} - l_{min} + 1))^{\frac{1}{n}}\]
-        令 $n\to\infty$ 则得到结论。
+        令 $n\to +\infty$ 则得到结论。
     \end{proof}
 
 \end{frame}
@@ -182,7 +182,7 @@
 
     从而
 
-    \[H(X) \leq \sum_{x\in\mathcal{X}}p(x)l_x = E(\lvert c(x)\rvert)\]
+    \[H(X) \leq \sum_{x\in\mathcal{X}}p(x)l_x = E(\lvert c(X)\rvert)\]
 
     这就是符号码信源编码定理。
 
@@ -198,8 +198,8 @@
     \end{block}
 
     \begin{itemize}
-        \item 典型序列：数量少，但出现概率大
-        \item 给典型序列分配短编码，给其他序列分配长编码
+        \item 弱典型序列：数量少，但出现概率大
+        \item 给弱典型序列分配短编码，给其他序列分配长编码
     \end{itemize}
 
 \end{frame}
@@ -210,6 +210,118 @@
     假设 $X_1, \dots, X_n$ 为取值为 $\{0, 1\}$，独立同分布的随机变量，取到 $0$ 的概率为 $p$，$q = p - 1$。则其中最``典型''的序列应该有 $p$ 个 $0$ 和 $q$ 个 $1$，例如 $\underbrace{0\cdots 0}_{p} \underbrace{1\cdots 1}_{q}$。某个特定的``典型序列'' $(x_1, \dots, x_n)$ 出现的概率为
 
     \[P((X_1, \dots, X_n) = (x_1, \dots, x_n)) = p^{np} q^{nq}\]
+
+    两边取 $\log$，得到
+
+    \[\log P((X_1, \dots, X_n) = (x_1, \dots, x_n)) = np\log p + nq\log q = -nH(X)\]
+
+    即
+
+    \[P((X_1, \dots, X_n) = (x_1, \dots, x_n)) = 2^{-nH(X)}\]
+
+    则典型序列的数量不会超过 $2^{nH(X)}$。
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{弱典型序列}
+    
+    \begin{block}{弱典型序列}
+        对任意 $n\in \mathbb{N}$ 和 $\varepsilon > 0$，令
+
+        \[\mathcal{T}_n^{\varepsilon} = \left\{(x_1, \dots, x_n) \in \mathcal{X}^n: \left\lvert-\frac{1}{n}\log p_{X_1, \dots, X_n}(x_1, \dots, x_n) - H(X)\right\rvert \leq \varepsilon\right\}\]
+
+        将 $\mathcal{T}_n^{\varepsilon}$ 中的序列称作长度为 $n$，误差为 $\varepsilon$ 的弱典型序列。
+    \end{block}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{弱典型序列是``少''的}
+    
+        对任意的弱典型序列，有 $\left\lvert-\frac{1}{n}\log p_{X_1, \dots, X_n}(x_1, \dots, x_n) - H(X)\right\rvert \leq \varepsilon$，即
+        \[p_{X_1, \dots, X_n}(x_1, \dots, x_n) \in \left[2^{-n(H(X)+\varepsilon)}, 2^{-n(H(X)-\varepsilon)}\right]\]
+        因此
+
+        \[\begin{split}
+            1 = \sum_{(x_1, \dots, x_n)\in\mathcal{X}}p_{X_1, \dots, X_n}(x_1, \dots, x_n) \geq & \sum_{(x_1, \dots, x_n)\in\mathcal{T}_n^{\varepsilon}}p_{X_1, \dots, X_n}(x_1, \dots, x_n) \\
+            \geq & \sum_{(x_1, \dots, x_n)\in\mathcal{T}_n^{\varepsilon}} 2^{-n(H(X)+\varepsilon)}
+        \end{split}\]
+        从而
+        \[\left\lvert\mathcal{T}_n^{\varepsilon}\right\rvert \leq 2^{n(H(X) + \varepsilon)}\]
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{弱典型序列的出现概率很大}
+
+    \begin{block}{弱大数定律（辛钦定理）}
+        设 $X_1, X_2, \dots$ 独立同分布且期望存在，则对任意 $\varepsilon > 0$，有
+
+        \[\lim_{n\to +\infty} P\left(\left\lvert \frac{1}{n}\sum_{i = 1}^n X - E(X)\right\rvert < \varepsilon\right) = 1\]
+    \end{block}
+
+    对任意序列，$X_1, \dots, X_n$ 独立同分布，则
+
+    \[-\log p_{X_1, \dots, X_n}(X_1, \dots, X_n) =  -\sum_{i=1}^{n} \log p_X(X_i)\]
+
+    且 $E(-\log p_X(X_i)) = H(X)$。则
+
+    \[\lim_{n\to +\infty} P\left(\left\lvert -\frac{1}{n}\sum_{i=1}^{n} \log p_X(X_i) - H(X)\right\rvert < \varepsilon\right) = 1\]
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{弱典型序列的出现概率很大}
+
+    任取 $\varepsilon_0$，对于足够大的 $n$，有
+
+    \[P\left(\left\lvert -\frac{1}{n}\sum_{i=1}^{n} \log p_X(X_i) - H(X)\right\rvert < \varepsilon\right) \geq 1 - \varepsilon_0\]
+
+    取 $\varepsilon_0 = \varepsilon$，则
+
+    \[\begin{split}
+        P((X_1, \dots, X_n)\in \mathcal{T}_n^{\varepsilon}) = & P\left(\left\lvert-\frac{1}{n}\log p_{X_1, \dots, X_n}(X_1, \dots, X_n) - H(X)\right\rvert \leq \varepsilon\right) \\
+        \geq & P\left(\left\lvert -\frac{1}{n}\sum_{i=1}^{n} \log p_X(X_i) - H(X)\right\rvert < \varepsilon\right) \\
+        \geq & 1 - \varepsilon
+    \end{split}\]
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信源编码定理}
+
+    \begin{block}{信源编码定理}
+        设离散型随机变量 $X$ 的取值集合为 $\mathcal{X}$。对任意 $\varepsilon > 0$，存在一个整数 $n$ 和一个唯一可译码 $c: \mathcal{X}^n \rightarrow \{0, 1\}^*$，使得
+
+        \[\frac{1}{n}E(\lvert c(X_1, \dots, X_n)\rvert) \leq H(X) + \varepsilon\]
+    \end{block}
+    
+    将所有 $x\in \mathcal{X}$ 分为典型序列 $\mathcal{T}_n^{\varepsilon_0}$ 和非典型序列。
+
+    \begin{itemize}
+        \item 典型序列至多有 $2^{n(H(X) + \varepsilon_0)}$ 个，因此可以用 $l_1 = \lceil n(H(X) + \varepsilon_0)\rceil$ 个比特来表示；
+        \item 非典型序列至多有 $\lvert \mathcal{X}\rvert$ 个，因此可以用 $l_2 = \lceil n\log \lvert \mathcal{X}\rvert\rceil$ 个比特来表示；
+        \item 在典型序列的码字前加上 $0$，非典型序列的码字前加上 $1$，用于区分。
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信源编码定理}
+
+    \[\begin{split}
+        & E(\lvert c(X_1, \dots, X_n)\rvert) \\
+        = & \sum_{x\in\mathcal{T}_n^{\varepsilon_0}}p(x)(l_1 + 1) + \sum_{x\notin\mathcal{T}_n^{\varepsilon_0}}p(x)(l_2 + 1) \\
+        \leq & \sum_{x\in\mathcal{T}_n^{\varepsilon_0}}p(x)(n(H(X) + \varepsilon_0) + 2) + \sum_{x\notin\mathcal{T}_n^{\varepsilon_0}}p(x)(n\log \lvert X\rvert + 2) \\
+        = & P((X_1, \dots, X_n) \in \mathcal{T}_n^{\varepsilon_0})(n(H(X) + \varepsilon_0) + 2) \\
+        & + P((X_1, \dots, X_n) \notin \mathcal{T}_n^{\varepsilon_0})(n\log \lvert X\rvert + 2) \\
+        \leq & n(H(X) + \varepsilon_0) + 2 + \varepsilon_0 n\log\lvert\mathcal{X}\rvert = n(H(X) + \epsilon_1)
+    \end{split}\]
+
+    其中 $\varepsilon_1 = \varepsilon_0(1 + \log\lvert\mathcal{X}\rvert) + \frac{2}{n}$。取足够小的 $\varepsilon_0$ 使得 $\varepsilon_0(1 + \log\lvert\mathcal{X}\rvert) < \varepsilon / 2$，然后取足够大的 $n$ 使得 $\frac{2}{n} < \varepsilon / 2$。则有 $E(\lvert c(X_1, \dots, X_n)\rvert) \leq n(H(X) + \epsilon)$，即
+
+    \[\frac{1}{n}E(\lvert c(X_1, \dots, X_n)\rvert) \leq H(X) + \varepsilon\]
 
 \end{frame}
 
