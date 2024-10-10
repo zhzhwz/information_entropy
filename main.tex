@@ -1,0 +1,216 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{ctex}
+
+\newcommand{\concept}[1]{{\color{blue} #1}}
+
+\title{信息熵与数据压缩}
+\author{祝润天}
+\institute{复旦大学计算机科学技术学院}
+\date{2024 年 10 月 11 日}
+
+\begin{document}
+
+\begin{frame}
+    
+    \maketitle
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信息的度量}
+
+    \begin{block}{抛硬币}
+        抛一枚硬币，平均意义下，最少需要几个比特来表示得到的结果？
+    \end{block}
+
+    抛出反面记为 $0$，抛出正面记为 $1$。则两种情况均需要 $1$ 个比特来表示结果。平均需要
+
+    \[E = \frac{1}{2}\times 1 + \frac{1}{2}\times 1 = 1\]
+
+    个比特。
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信息的度量}
+
+    \begin{block}{投骰子}
+        投一个骰子，平均意义下，最少需要几个比特来表示得到的结果？
+    \end{block}
+    
+    将 $6$ 种结果分别编码为
+
+    \[\begin{split}
+        & 1 \rightarrow 000, 2 \rightarrow 001, 3 \rightarrow 010 \\
+        & 4 \rightarrow 011, 5 \rightarrow 100, 6 \rightarrow 101
+    \end{split}\]
+
+    平均需要 $3$ 个比特。
+
+    能否更少？
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信息的度量}
+
+    \begin{block}{投骰子}
+        投一个骰子，平均意义下，最少需要几个比特来表示得到的结果？
+    \end{block}
+    
+    将 $6$ 种结果分别编码为
+
+    \[\begin{split}
+        & 1 \rightarrow 000, 2 \rightarrow 001, 3 \rightarrow 010 \\
+        & 4 \rightarrow 011, 5 \rightarrow 10, \;\; 6 \rightarrow 11
+    \end{split}\]
+
+    平均需要
+
+    \[E = \frac{4}{6}\times 3 + \frac{2}{6}\times 2 \approx 2.67\]
+    
+    个比特。
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{文件数据压缩}
+
+    \begin{example}
+        你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人。
+    \end{example}
+
+    \begin{block}{汉字字频}
+        \begin{table}
+            \begin{tabular}{cccc}
+                的 & 一 & 是 & $\cdots$ \\
+                $0.0575$ & $0.0473$ & $0.0429$ & $\cdots$
+            \end{tabular}
+        \end{table}
+    \end{block}
+
+    使用等长的 Unicode 码 $\rightarrow$ 为概率更高的字符分配更短的码字
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{唯一可译码}
+
+    将一个文件编码后，能够确保恢复这个文件。
+
+    % \begin{block}{唯一可译码}
+    %     令 $\mathcal{X}$ 是一个有限集合。从 $\mathcal{X}$ 中取出有限个元素组成一个序列，则称这个序列为一个 $\mathcal{X}$ 上的\concept{字符串}。把全体 $\mathcal{X}$ 上的字符串记为 $\mathcal{X}^*$。给定两个有限集合 $\mathcal{X}$ 和 $\mathcal{Y}$，函数 $c: \mathcal{X}\rightarrow \mathcal{Y}^*$ 称为一个\concept{字符编码}。令 $x_i\in \mathcal{X}$, $c^*(x_1, \dots, x_n) = c(x_1)\cdots c(x_n)$。如果 $c^*$ 是一个单射，则称 $c$ 是一个唯一可译码。
+    % \end{block}
+
+    \begin{example}
+        $c(x)$ 将 $\mathcal{X} = \{1, 2, 3, 4, 5, 6\}$ 中的每个字符 $x$ 编码为它的二进制表示，对应的码字分别为 $1, 10, 11, 100, 101, 110$。则 $c$ 不是一个唯一可译码，因为 $110$ 可以被译成 $6$ 或者 $12$。
+    \end{example}
+
+    \begin{itemize}
+        \item 令 $c^*(x_1, \dots, x_n) = c(x_1)\cdots c(x_n)$。则 $c$ 是一个唯一可译码当且仅当 $c^*$ 是一个单射。
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信息熵}
+
+    \begin{block}{信息熵}
+        假设 $X$ 是一个离散型随机变量，其可能的取值集合为$\mathcal{X}$。则 $X$ 的信息熵定义为
+
+        \[H(X) = -\sum_{x\in \mathcal{X}}p(x)\log p(x)\]
+    \end{block}
+
+    \begin{block}{符号码信源编码定理}
+        若编码 $c$ 将 $x$ 编码为有限长的 $01$ 字符串 $c(x)$，则
+
+        \[H(X) \leq E(\lvert c(x)\rvert)\]
+    \end{block}
+
+    % 假设 $n\in\mathbb{N}$, $X$ 的取值集合为 $\mathcal{X} = \{1, \dots, 2^n\}$，取到每个值的概率均为 $\frac{1}{2^n}$。最优的编码方案就是用 $\underbrace{0 \cdots 0}_{n}, \dots, \underbrace{1 \cdots 1}_{n}$ 编码每个取值。平均需要的比特数为
+
+    % \[\sum_{x\in\mathcal{X}}\frac{1}{2^n}\log 2^n = -\sum_{x\in\mathcal{X}}\frac{1}{2^n}\log \frac{1}{2^n} = H(X)\]
+
+    % 更一般地，对任意离散型随机变量 $X$，要表示 $X$ 取值的结果，平均需要的比特数不会少于 $H(X)$。
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Kraft - McMillan 不等式}
+
+    对 $\mathcal{X}$ 中的字符 $x$，$c$ 将其编码为对应的 $01$ 字符串 $c(x)$。令 $l_x = \lvert c(x)\rvert$ 是码字的长度。则 $\sum_{x\in\mathcal{X}}2^{-l_x}\leq 1$。
+
+    \begin{proof}
+        令 $l_{min} = \min_{x\in\mathcal{X}}\lvert c(x)\rvert$, $l_{max} = \max_{x\in\mathcal{X}}\lvert c(x)\rvert$，$a(k)$ 为长度为 $k$ 的码字个数。则
+        \[\left(\sum_{x\in\mathcal{X}}2^{-\lvert c(x)\rvert}\right)^n = \sum_{k = nl_{min}}^{nl_{max}} a(k)2^{-k}\]
+        由唯一可译性质码的性质可知 $a(k)\leq 2^k$，则
+        \[\sum_{x\in\mathcal{X}}2^{-\lvert c(x)\rvert} \leq (n(l_{max} - l_{min} + 1))^{\frac{1}{n}}\]
+        令 $n\to\infty$ 则得到结论。
+    \end{proof}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{符号码信源编码定理}
+
+        \[\begin{split}
+            minimize & \quad \sum_{x\in\mathcal{X}}p(x)l_x \\
+            s.t. & \quad \sum_{x\in\mathcal{X}} 2^{-l_x} \leq 1 \text{ and } l_x > 0
+        \end{split}\]
+
+    \begin{proof}
+        极值只会在 $\sum_{x\in\mathcal{X}} 2^{-l_x} = 1$ 时取到。利用拉格朗日乘数法，构造
+
+        \[L(l_{x_1}, \dots, l_{x_n}, \lambda) = \sum_{x\in\mathcal{X}} p(x)l_x - \lambda\left(\sum_{x\in\mathcal{X}}2^{-l_x}-1\right)\]
+        
+        解得
+
+        \[l_x = -\log p(x)\]
+
+    \end{proof}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{符号码信源编码定理}
+    
+    因此，当 $l_x = -\log p(x)$ 时，$\sum_{x\in\mathcal{X}}p(x)l_x$ 取到极小值
+
+    \[-\sum_{x\in\mathcal{X}}p(x)\log p(x) = H(X)\]
+
+    从而
+
+    \[H(X) \leq \sum_{x\in\mathcal{X}}p(x)l_x = E(\lvert c(x)\rvert)\]
+
+    这就是符号码信源编码定理。
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信源编码定理（香农第一定理）}
+
+    \begin{block}{信源编码定理}
+        设离散型随机变量 $X$ 的取值集合为 $\mathcal{X}$。对任意 $\varepsilon > 0$，存在一个整数 $n$ 和一个唯一可译码 $c: \mathcal{X}^n \rightarrow \{0, 1\}^*$，使得
+
+        \[\frac{1}{n}E(\lvert c(X_1, \dots, X_n)\rvert) \leq H(X) + \varepsilon\]
+    \end{block}
+
+    \begin{itemize}
+        \item 典型序列：数量少，但出现概率大
+        \item 给典型序列分配短编码，给其他序列分配长编码
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{典型序列}
+
+    假设 $X_1, \dots, X_n$ 为取值为 $\{0, 1\}$，独立同分布的随机变量，取到 $0$ 的概率为 $p$，$q = p - 1$。则其中最``典型''的序列应该有 $p$ 个 $0$ 和 $q$ 个 $1$，例如 $\underbrace{0\cdots 0}_{p} \underbrace{1\cdots 1}_{q}$。某个特定的``典型序列'' $(x_1, \dots, x_n)$ 出现的概率为
+
+    \[P((X_1, \dots, X_n) = (x_1, \dots, x_n)) = p^{np} q^{nq}\]
+
+\end{frame}
+
+\end{document}
