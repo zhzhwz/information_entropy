@@ -316,12 +316,29 @@
         \leq & \sum_{x\in\mathcal{T}_n^{\varepsilon_0}}p(x)(n(H(X) + \varepsilon_0) + 2) + \sum_{x\notin\mathcal{T}_n^{\varepsilon_0}}p(x)(n\log \lvert X\rvert + 2) \\
         = & P((X_1, \dots, X_n) \in \mathcal{T}_n^{\varepsilon_0})(n(H(X) + \varepsilon_0) + 2) \\
         & + P((X_1, \dots, X_n) \notin \mathcal{T}_n^{\varepsilon_0})(n\log \lvert X\rvert + 2) \\
-        \leq & n(H(X) + \varepsilon_0) + 2 + \varepsilon_0 n\log\lvert\mathcal{X}\rvert = n(H(X) + \epsilon_1)
+        \leq & n(H(X) + \varepsilon_0) + 2 + \varepsilon_0 n\log\lvert\mathcal{X}\rvert \\
+        = & n(H(X) + \varepsilon_1)
     \end{split}\]
 
-    其中 $\varepsilon_1 = \varepsilon_0(1 + \log\lvert\mathcal{X}\rvert) + \frac{2}{n}$。取足够小的 $\varepsilon_0$ 使得 $\varepsilon_0(1 + \log\lvert\mathcal{X}\rvert) < \varepsilon / 2$，然后取足够大的 $n$ 使得 $\frac{2}{n} < \varepsilon / 2$。则有 $E(\lvert c(X_1, \dots, X_n)\rvert) \leq n(H(X) + \epsilon)$，即
+    其中 $\varepsilon_1 = \varepsilon_0(1 + \log\lvert\mathcal{X}\rvert) + \frac{2}{n}$。
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{信源编码定理}
+
+    $E(\lvert c(X_1, \dots, X_n)\rvert) \leq n(H(X) + \varepsilon_1)$，其中 $\varepsilon_1 = \varepsilon_0(1 + \log\lvert\mathcal{X}\rvert) + \frac{2}{n}$。
+    
+    \begin{itemize}
+        \item 取足够小的 $\varepsilon_0$ 使得 $\varepsilon_0(1 + \log\lvert\mathcal{X}\rvert) < \varepsilon / 2$
+        \item 取足够大的 $n$ 使得 $\frac{2}{n} < \varepsilon / 2$
+    \end{itemize}
+
+    则有 $E(\lvert c(X_1, \dots, X_n)\rvert) \leq n(H(X) + \varepsilon)$，即
 
     \[\frac{1}{n}E(\lvert c(X_1, \dots, X_n)\rvert) \leq H(X) + \varepsilon\]
+
+    这就是信源编码定理，或香农第一定理。
 
 \end{frame}
 
