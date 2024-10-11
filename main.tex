@@ -146,7 +146,7 @@
         令 $l_{min} = \min_{x\in\mathcal{X}}\lvert c(x)\rvert$, $l_{max} = \max_{x\in\mathcal{X}}\lvert c(x)\rvert$，$a(k)$ 为长度为 $k$ 的码字个数。则
         \[\left(\sum_{x\in\mathcal{X}}2^{-\lvert c(x)\rvert}\right)^n = \sum_{k = nl_{min}}^{nl_{max}} a(k)2^{-k}\]
         由唯一可译性质码的性质可知 $a(k)\leq 2^k$，则
-        \[\sum_{x\in\mathcal{X}}2^{-\lvert c(x)\rvert} \leq (n(l_{max} - l_{min} + 1))^{\frac{1}{n}}\]
+        \[\sum_{x\in\mathcal{X}}2^{-\lvert c(x)\rvert} \leq (n(l_{max} - l_{min}) + 1)^{\frac{1}{n}}\]
         令 $n\to +\infty$ 则得到结论。
     \end{proof}
 
@@ -207,7 +207,7 @@
 \begin{frame}
     \frametitle{典型序列}
 
-    假设 $X_1, \dots, X_n$ 为取值为 $\{0, 1\}$，独立同分布的随机变量，取到 $0$ 的概率为 $p$，$q = p - 1$。则其中最``典型''的序列应该有 $p$ 个 $0$ 和 $q$ 个 $1$，例如 $\underbrace{0\cdots 0}_{p} \underbrace{1\cdots 1}_{q}$。某个特定的``典型序列'' $(x_1, \dots, x_n)$ 出现的概率为
+    假设 $X_1, \dots, X_n$ 为取值为 $\{0, 1\}$，独立同分布的随机变量，取到 $0$ 的概率为 $p$，$q = p - 1$。则其中最``典型''的序列应该有 $np$ 个 $0$ 和 $nq$ 个 $1$，例如 $\underbrace{0\cdots 0}_{np} \underbrace{1\cdots 1}_{nq}$。某个特定的``典型序列'' $(x_1, \dots, x_n)$ 出现的概率为
 
     \[P((X_1, \dots, X_n) = (x_1, \dots, x_n)) = p^{np} q^{nq}\]
 
@@ -301,7 +301,7 @@
 
     \begin{itemize}
         \item 典型序列至多有 $2^{n(H(X) + \varepsilon_0)}$ 个，因此可以用 $l_1 = \lceil n(H(X) + \varepsilon_0)\rceil$ 个比特来表示；
-        \item 非典型序列至多有 $\lvert \mathcal{X}\rvert$ 个，因此可以用 $l_2 = \lceil n\log \lvert \mathcal{X}\rvert\rceil$ 个比特来表示；
+        \item 非典型序列至多有 $\lvert \mathcal{X}\rvert^n$ 个，因此可以用 $l_2 = \lceil n\log \lvert \mathcal{X}\rvert\rceil$ 个比特来表示；
         \item 在典型序列的码字前加上 $0$，非典型序列的码字前加上 $1$，用于区分。
     \end{itemize}
 
